@@ -1,4 +1,5 @@
 import sqlite3
+
 def db_connection():
     conn = None
     try:
@@ -6,6 +7,19 @@ def db_connection():
     except sqlite3.Error as e:
         print(e)
     return conn
+
+def create_table():
+    conn = db_connection()
+    cursor = conn.cursor()
+    cursor.execute('''CREATE TABLE IF NOT EXISTS reviews (
+                        id INTEGER PRIMARY KEY,
+                        name TEXT NOT NULL,
+                        review TEXT NOT NULL,
+                        rate INTEGER NOT NULL
+                    )''')
+    conn.commit()
+    conn.close()
+
 def populate_data():
     conn = db_connection()
     cursor = conn.cursor()
@@ -58,11 +72,7 @@ def populate_data():
     # Commit changes and close connection
     conn.commit()
     conn.close()
+
 if __name__ == "__main__":
-    populate_data()
-
-
-
-
-
-
+    create_table()
+    populate_data()    
